@@ -6,9 +6,8 @@
   outline: none;
   background-image: url(../../../images/heart.svg);
   margin-right: 20px;
-  cursor: pointer;
 }
 
 .gallery__like:hover {
-  opacity: 0.6;
+  opacity: 0.5;
 }
