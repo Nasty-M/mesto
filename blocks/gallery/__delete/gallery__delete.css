@@ -13,6 +13,6 @@
   z-index: 2;
 }
 
-.gallery__like:hover {
-  opacity: 0.5;
+.gallery__delete:hover {
+  opacity: 0.6;
 }
