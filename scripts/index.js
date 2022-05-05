@@ -24,7 +24,7 @@ const btnClosePopupImage = document.querySelector('.popup__close_image');
 const popupOpenedImage = document.querySelector('.popup_type_image');
 const popupImageTitle = popupOpenedImage.querySelector('.popup__image-title');
 const popupImage = popupOpenedImage.querySelector('.popup__image');
-
+const popupList = Array.from(document.querySelectorAll('.popup'));
 
 const initialCards = [
   {
@@ -52,6 +52,7 @@ const initialCards = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
+
 
 function activeLike(evt) {
   evt.target.classList.toggle('like-is-active');
@@ -98,13 +99,21 @@ function deleteCard(evt) {
   currentCard.remove();
 }
 
+function pressButton(evt) {
+  if (evt.key === 'Escape') {
+    const popupOpened = document.querySelector('.popup_is-active');
+    closePopup(popupOpened);
+  }
+}
 
 const openPopup = (popup) => {
   popup.classList.add('popup_is-active');
+  document.addEventListener('keyup', pressButton);
 }
 
 const closePopup = (popup) => {
   popup.classList.remove('popup_is-active');
+  document.removeEventListener('keyup', pressButton);
 }
 
 function fillInputProfile() {
@@ -131,25 +140,28 @@ function submitFormAddHandler (evt) {
   formAddPlace.reset();
 }
 
+popupList.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+    if (evt.target.classList.contains('popup_is-active')) {
+      closePopup(popup);
+    }
+    if (evt.target.classList.contains('popup__close')) {
+      closePopup(popup);
+    }
+  }); 
+});
+
+
+
 formEditProfile.addEventListener('submit', submitFormEditHandler);
 formAddPlace.addEventListener('submit', submitFormAddHandler);
 
 profileButton.addEventListener('click', fillInputProfile);
 
-btnClosePopupProfile.addEventListener('click', () => {
-  closePopup(popupProfileEdit);
-});
-
 newPlaceButton.addEventListener('click', () => {
   openPopup(popupAddPlace);
 });
 
-btnClosePopupPlace.addEventListener('click', () => {
-  closePopup(popupAddPlace);
-});
 
-btnClosePopupImage.addEventListener('click', () => {
-  closePopup(popupOpenedImage);
-});
 
 
