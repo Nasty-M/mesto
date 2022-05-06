@@ -138,6 +138,9 @@ function submitFormAddHandler (evt) {
   appendNewCard(newCard);
   closePopup(popupAddPlace);
   formAddPlace.reset();
+  const buttonCreateNewCard = formAddPlace.querySelector('.popup__button-create');
+  buttonCreateNewCard.setAttribute("disabled", "disabled");
+  buttonCreateNewCard.classList.add('popup__button_disabled');
 }
 
 popupList.forEach((popup) => {
