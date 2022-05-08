@@ -1,30 +1,24 @@
+import { disableButton } from "./validate.js";
+
 const popupProfileEdit = document.querySelector('.popup_type_edit');
 const popupAddPlace = document.querySelector('.popup_type_add');
 const profileButton = document.querySelector('.profile__button-edit');
 const newPlaceButton = document.querySelector('.profile__button-add');
 const popupName = document.querySelector('.profile__name');
 const popupAbout = document.querySelector('.profile__about');
-
-// const popupTitleImage = document.querySelector('.gallery__title');
-// const popupLinkImage = document.querySelector('.gallery__picture');
-
 const nameInput = popupProfileEdit.querySelector('.popup__input_type_name');
 const aboutInput = popupProfileEdit.querySelector('.popup__input_type_about');
 const titleImageInput = popupAddPlace.querySelector('.popup__input_type_place-title');
 const linkImageInput = popupAddPlace.querySelector('.popup__input_type_place-link');
 const formEditProfile = document.querySelector('.popup__form_type_edit'); 
 const formAddPlace = document.querySelector('.popup__form_type_add'); 
-const placeTitleInput = popupAddPlace.querySelector('.popup__input_type_place-title');
-const placeLinkInput = popupAddPlace.querySelector('.popup__input_type_place-link');
 const cardsGallery = document.querySelector('.gallery__elements');
 const templateCard = document.querySelector('.template_card');
-const btnClosePopupProfile = document.querySelector('.popup__close_edit');
-const btnClosePopupPlace = document.querySelector('.popup__close_add');
-const btnClosePopupImage = document.querySelector('.popup__close_image');
 const popupOpenedImage = document.querySelector('.popup_type_image');
 const popupImageTitle = popupOpenedImage.querySelector('.popup__image-title');
 const popupImage = popupOpenedImage.querySelector('.popup__image');
 const popupList = Array.from(document.querySelectorAll('.popup'));
+const buttonCreateNewCard = popupAddPlace.querySelector('.popup__button-create');
 
 const initialCards = [
   {
@@ -138,9 +132,6 @@ function submitFormAddHandler (evt) {
   appendNewCard(newCard);
   closePopup(popupAddPlace);
   formAddPlace.reset();
-  const buttonCreateNewCard = formAddPlace.querySelector('.popup__button-create');
-  buttonCreateNewCard.setAttribute("disabled", "disabled");
-  buttonCreateNewCard.classList.add('popup__button_disabled');
 }
 
 popupList.forEach((popup) => {
@@ -163,6 +154,7 @@ profileButton.addEventListener('click', fillInputProfile);
 
 newPlaceButton.addEventListener('click', () => {
   openPopup(popupAddPlace);
+  disableButton(buttonCreateNewCard, 'popup__button_disabled');
 });
 
 

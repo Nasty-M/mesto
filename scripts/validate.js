@@ -52,10 +52,14 @@ const hasInvalidInput = (inputList) => {
   })
 };
 
+export const disableButton = (elem, selector) => {
+  elem.classList.add(selector); 
+  elem.setAttribute("disabled", "disabled");
+}
+
 const toggleButtonState = (inputList, buttonElement, obj) => {
   if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(obj.inactiveButtonClass); 
-    buttonElement.setAttribute("disabled", "disabled");
+    disableButton(buttonElement, obj.inactiveButtonClass);
   } else {
     buttonElement.classList.remove(obj.inactiveButtonClass);
     buttonElement.removeAttribute("disabled");
