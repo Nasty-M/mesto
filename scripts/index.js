@@ -1,11 +1,6 @@
 import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
 
-export const disableButton = (elem, selector) => {
-  elem.classList.add(selector); 
-  elem.setAttribute("disabled", "disabled");
-}
-
 const popupProfileEdit = document.querySelector('.popup_type_edit');
 const popupAddPlace = document.querySelector('.popup_type_add');
 const profileButton = document.querySelector('.profile__button-edit');
@@ -19,12 +14,10 @@ const linkImageInput = popupAddPlace.querySelector('.popup__input_type_place-lin
 const formEditProfile = document.querySelector('.popup__form_type_edit'); 
 const formAddPlace = document.querySelector('.popup__form_type_add'); 
 const cardsGallery = document.querySelector('.gallery__elements');
-const templateCard = document.querySelector('.template_card');
 const popupOpenedImage = document.querySelector('.popup_type_image');
 const popupImageTitle = popupOpenedImage.querySelector('.popup__image-title');
 const popupImage = popupOpenedImage.querySelector('.popup__image');
 const popupList = Array.from(document.querySelectorAll('.popup'));
-const buttonCreateNewCard = popupAddPlace.querySelector('.popup__button-create');
 
 const initialCards = [
   {
@@ -62,30 +55,55 @@ const objectSettings = {
   errorClass: 'popup__error-message_visible'
 }
 
-const formEditValidator = new FormValidator(objectSettings, formEditProfile);
-formEditValidator.enableValidation();
 
-const formAddValidator = new FormValidator(objectSettings, formAddPlace);
-formAddValidator.enableValidation();
+const formValidators = {}
 
-export function openPopupImage(element) {
+// Включение валидации
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector));
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement);
+// получаем данные из атрибута `name` у формы
+    const formName = formElement.getAttribute('name');
+
+   // вот тут в объект записываем под именем формы
+    formValidators[formName] = validator;
+   validator.enableValidation();
+  });
+};
+
+enableValidation(objectSettings);
+
+
+function handleCardClick(element) {
   popupImage.src = element.link;
   popupImage.alt = element.name;
   popupImageTitle.textContent = element.name;
   openPopup(popupOpenedImage);
 }
 
-initialCards.forEach((item) => {
-	const card = new Card(item, '.template_card');
+function createCard(item) {
+  const card = new Card(item, '.template_card', handleCardClick);
 	const cardTemplate = card.generateCard();
+  return cardTemplate;
+}
 
-  cardsGallery.append(cardTemplate);
+initialCards.forEach((item) => {
+  const cardTemplate = createCard(item);
+	cardsGallery.append(cardTemplate);
 });
 
 function pressButton(evt) {
   if (evt.key === 'Escape') {
     const popupOpened = document.querySelector('.popup_is-active');
     closePopup(popupOpened);
+  }
+}
+
+const clearForm = (popup) => {
+  const form = popup.querySelector('.popup__form');
+  if (form) {
+    form.reset();
   }
 }
 
@@ -97,6 +115,7 @@ const openPopup = (popup) => {
 const closePopup = (popup) => {
   popup.classList.remove('popup_is-active');
   document.removeEventListener('keyup', pressButton);
+  clearForm(popup);
 }
 
 function fillInputProfile() {
@@ -105,20 +124,19 @@ function fillInputProfile() {
   openPopup(popupProfileEdit);
 }
 
-function submitFormEditHandler (evt) {
+function handleFormEditSubmit (evt) {
     evt.preventDefault(); 
     popupName.textContent = nameInput.value;
     popupAbout.textContent = aboutInput.value;
     closePopup(popupProfileEdit);
 }
 
-function submitFormAddHandler (evt) {
+function handleFormAddSubmit (evt) {
   evt.preventDefault(); 
   const newCardObject = {};
   newCardObject['name'] = titleImageInput.value;
   newCardObject['link'] = linkImageInput.value;
-  const newCard = new Card(newCardObject, '.template_card');
-  const cardTemplate = newCard.generateCard();
+  const cardTemplate = createCard(newCardObject);
   cardsGallery.prepend(cardTemplate);
   closePopup(popupAddPlace);
   formAddPlace.reset();
@@ -137,14 +155,17 @@ popupList.forEach((popup) => {
 
 
 
-formEditProfile.addEventListener('submit', submitFormEditHandler);
-formAddPlace.addEventListener('submit', submitFormAddHandler);
+formEditProfile.addEventListener('submit', handleFormEditSubmit);
+formAddPlace.addEventListener('submit', handleFormAddSubmit);
 
-profileButton.addEventListener('click', fillInputProfile);
+profileButton.addEventListener('click', () => {
+  fillInputProfile();
+  formValidators['edit-form'].resetValidation();
+});
 
 newPlaceButton.addEventListener('click', () => {
   openPopup(popupAddPlace);
-  disableButton(buttonCreateNewCard, 'popup__button_disabled');
+  formValidators['add-form'].resetValidation();
 });
 
 
