@@ -93,29 +93,21 @@ initialCards.forEach((item) => {
 	cardsGallery.append(cardTemplate);
 });
 
-function pressButton(evt) {
+function handleEscKey(evt) {
   if (evt.key === 'Escape') {
     const popupOpened = document.querySelector('.popup_is-active');
     closePopup(popupOpened);
   }
 }
 
-const clearForm = (popup) => {
-  const form = popup.querySelector('.popup__form');
-  if (form) {
-    form.reset();
-  }
-}
-
 const openPopup = (popup) => {
   popup.classList.add('popup_is-active');
-  document.addEventListener('keyup', pressButton);
+  document.addEventListener('keyup', handleEscKey);
 }
 
 const closePopup = (popup) => {
   popup.classList.remove('popup_is-active');
-  document.removeEventListener('keyup', pressButton);
-  clearForm(popup);
+  document.removeEventListener('keyup', handleEscKey);
 }
 
 function fillInputProfile() {
@@ -164,6 +156,7 @@ profileButton.addEventListener('click', () => {
 });
 
 newPlaceButton.addEventListener('click', () => {
+  formAddPlace.reset();
   openPopup(popupAddPlace);
   formValidators['add-form'].resetValidation();
 });
