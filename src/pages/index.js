@@ -6,6 +6,7 @@ import { PopupWithForm } from "../components/PopupWithForm.js";
 import { PopupWithImage } from "../components/PopupWithImage.js";
 import { Section } from "../components/Section.js";
 import { UserInfo } from "../components/UserInfo.js";
+import { initialCards, objectSettings } from "../utils/constants.js";
 
 const popupProfileEdit = document.querySelector('.popup_type_edit');
 const profileButton = document.querySelector('.profile__button-edit');
@@ -13,43 +14,6 @@ const newPlaceButton = document.querySelector('.profile__button-add');
 const nameInput = popupProfileEdit.querySelector('.popup__input_type_name');
 const aboutInput = popupProfileEdit.querySelector('.popup__input_type_about');
 const formAddPlace = document.querySelector('.popup__form_type_add'); 
-const cardsGallery = document.querySelector('.gallery__elements');
-
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
-const objectSettings = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error-message_visible'
-}
 
 const formValidators = {}
 
@@ -83,25 +47,20 @@ function createCard(item) {
   return cardTemplate;
 }
 
-initialCards.forEach((item) => {
-  const cardTemplate = createCard(item);
-	cardsGallery.append(cardTemplate);
-});
-
-const renderCards = new Section({
+const cardList = new Section({
   items: initialCards,
   renderer: (item) => {
     const card = createCard(item);
-    renderCards.addItem(card);
+    cardList.addItem(card);
   }
 }, '.gallery__elements');
 
-renderCards.renderItems();
+cardList.renderItems();
 
 const popupAddPlace = new PopupWithForm(
   '.popup_type_add',
   (item) => {
-    renderCards.renderer(item);
+    cardList.renderer(item);
     popupAddPlace.close();
   }
 )

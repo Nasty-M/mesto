@@ -10,18 +10,17 @@ export class Card {
     this._cardTitle = this._cardTemplate.querySelector('.gallery__title');
   }
 
-  _toggleLike(evt) {
-    evt.target.classList.toggle('like-is-active');
+  _toggleLike() {
+    this._buttonLike.classList.toggle('like-is-active');
   }
 
-  _deleteCard(evt) {
-    const currentCard = evt.target.closest('.gallery__element');
-    currentCard.remove();
+  _deleteCard() {
+    this._cardTemplate.remove();
   }
 
   _setEventListeners() {
-    this._buttonLike.addEventListener('click', this._toggleLike);  
-    this._btnDeleteCard.addEventListener('click', this._deleteCard);  
+    this._buttonLike.addEventListener('click', () => this._toggleLike());  
+    this._btnDeleteCard.addEventListener('click', () => this._deleteCard());  
     this._cardImage.addEventListener('click', () => {
       this._handleCardClick(this._cardObj);
     });
