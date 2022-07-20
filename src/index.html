@@ -17,7 +17,9 @@
   <main class="content">
     <section class="profile">
       <div class="profile__info">
-        <img class="profile__avatar" src="<%=require('./images/image.png')%>" alt="аватар пользователя">
+        <a class="profile__overlay" href="#">
+          <img class="profile__avatar" src="" alt="аватар пользователя">
+        </a>
         <div class="profile__user">
           <div class="profile__edited">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -104,13 +106,40 @@
     </div> 
   </div> 
 
+  <div class="popup popup_type_avatar">
+    <div class="popup__content">
+      <button class="popup__close popup__close_avatar" type="button" aria-label="Закрыть"></button>
+      <h3 class="popup__title">Обновить аватар</h3>
+      <form class="popup__form popup__form_type_avatar" name= "change-avatar">
+        <div class="popup__label">
+          <input 
+            class="popup__input popup__input_type_avatar-link" 
+            type="url" 
+            placeholder="Ссылка на фото" 
+            name="avatar"
+            required
+            id="input-avatar">
+          <span class="popup__error-message input-avatar-error"></span>
+        </div>
+        <button class="popup__button popup__button-save" type="submit">Сохранить</button>
+      </form>
+    </div> 
+  </div> 
+
   <div class="popup popup_type_image">
     <div class="popup__card-image">
       <button class="popup__close popup__close_image" type="button" aria-label="Закрыть"></button>
       <img src="#" alt="" class="popup__image">
       <p class="popup__image-title"></p>
     </div>
-    
+  </div>
+
+  <div class="popup popup__delete-card">
+    <div class="popup__content">
+      <h3 class="popup__title">Вы уверены?</h3>
+      <button class="popup__close popup__close_add" type="button" aria-label="Закрыть"></button>
+      <button class="popup__button popup__button-delete">Да</button>
+    </div>    
   </div>
 
 <template class="template_card">
@@ -123,7 +152,11 @@
     </div>
     <div class="gallery__card">
       <h2 class="gallery__title"></h2>
-      <button type="button" class="gallery__like" aria-label="Лайк"></button>
+      <div class="gallery__like-info">
+        <button type="button" class="gallery__like" aria-label="Лайк"></button>
+        <p class="gallery__like-counter">0</p>
+      </div>
+      
     </div>
   </li>
 </template>

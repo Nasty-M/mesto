@@ -3,8 +3,8 @@
   color: black;
   border-radius: 0 0 10px 10px;
   width: 100%;
+  min-height: 79px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 25px 0 31px;
 }
