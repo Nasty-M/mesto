@@ -146,7 +146,7 @@ const popupEditProfile = new PopupWithForm(
 popupEditProfile.setEventListeners();
 
 const popupCardDelete = new PopupCardDelete(
-  '.popup__delete-card',
+  '.popup_type_delete',
   {callbackFunction: (popup) => {
     popup.requestLoading(true, 'Удаление...');
     api.deleteCard(popup.cardId)
