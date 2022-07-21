@@ -1,15 +1,16 @@
 import { Popup } from "./Popup.js";
 
-const popupOpenedImage = document.querySelector('.popup_type_image');
-const popupImageTitle = popupOpenedImage.querySelector('.popup__image-title');
-const popupImage = popupOpenedImage.querySelector('.popup__image');
-
 export class PopupWithImage extends Popup {
-  
+  constructor(selector) {
+    super(selector);
+    this._popupImageTitle = this.popup.querySelector('.popup__image-title');
+    this._popupImage = this.popup.querySelector('.popup__image');
+  }
+
   open(card) {
-    popupImage.src = card.link;
-    popupImage.alt = card.name;
-    popupImageTitle.textContent = card.name;
+    this._popupImage.src = card.link;
+    this._popupImage.alt = card.name;
+    this._popupImageTitle.textContent = card.name;
     super.open();
   }
     

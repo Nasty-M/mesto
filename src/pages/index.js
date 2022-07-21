@@ -26,24 +26,18 @@ const api = new Api({
   }
 });
 
-api.getUserInfo()
-.then((data) => {
-  userInfo.setUserInfo(data);
-  userInfo.setAvatar(data);   
-  userInfo.setId(data);   
-})
-.catch((err) => {
+Promise.all([                 //в Promise.all передаем массив промисов которые нужно выполнить 
+  api.getUserInfo(), 
+  api.getInitialCards() ]) 
+.then(([info, initialCards])=>{    //попадаем сюда, когда оба промиса будут выполнены, деструктурируем ответ
+  userInfo.setUserInfo(info);
+  userInfo.setAvatar(info);   
+  userInfo.setId(info); 
+  cardList.renderItems(initialCards);    //все данные получены, отрисовываем страницу 
+}) 
+.catch((err)=>{             //попадаем сюда если один из промисов завершится ошибкой 
   console.log(`Ошибка ${err}. Запрос не выполнен`);
-});
-
-api.getInitialCards()
-.then((data) => {
-  cardList._items = data;
-  cardList.renderItems();
-})
-.catch((err) => {
-  console.log(`Ошибка ${err}. Запрос не выполнен`);
-});
+ })
 
 const formValidators = {}
 
@@ -68,7 +62,7 @@ function handleCardClick(element) {
 }
 
 function openPopupDelete(card) {
-  popupCardDelete.currentCard = card.btnDeleteCard.closest('.gallery__element');
+  popupCardDelete.currentCard = card;
   popupCardDelete.open();
   popupCardDelete.cardId = card.getId();
 }
@@ -151,7 +145,7 @@ const popupCardDelete = new PopupCardDelete(
     popup.requestLoading(true, 'Удаление...');
     api.deleteCard(popup.cardId)
     .then(() => {
-      popup.currentCard.remove(); 
+      popup.currentCard.deleteCard();
       popup.close();
     })
     .catch((err) => {

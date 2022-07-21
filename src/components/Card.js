@@ -18,8 +18,9 @@ export class Card {
     this._buttonLike.classList.toggle('like-is-active');
   }
 
-  _deleteCard() {
+  deleteCard() {
     this._cardTemplate.remove();
+    this._cardTemplate = null;
   }
 
   getId() {
